@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  photonic-simulator:
+    build: 
+      context: .
+      target: production
+    image: terragonlabs/photonic-ai-simulator:latest
+    container_name: photonic-simulator
+    volumes:
+      - ./data:/app/data
+      - ./results:/app/results
+      - ./notebooks:/app/notebooks
+    environment:
+      - PYTHONPATH=/app/src
+      - LOG_LEVEL=INFO
+    ports:
+      - "8888:8888"  # Jupyter notebook
+    networks:
+      - photonic-network
+    command: ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+
+  photonic-simulator-gpu:
+    build:
+      context: .
+      target: gpu-production
+    image: terragonlabs/photonic-ai-simulator:gpu-latest
+    container_name: photonic-simulator-gpu
+    volumes:
+      - ./data:/app/data
+      - ./results:/app/results
+      - ./notebooks:/app/notebooks
+    environment:
+      - PYTHONPATH=/app/src
+      - LOG_LEVEL=INFO
+      - CUDA_VISIBLE_DEVICES=0
+    ports:
+      - "8889:8888"  # Jupyter notebook on different port
+    networks:
+      - photonic-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+    profiles: ["gpu"]
+
+  benchmark-runner:
+    build: .
+    container_name: photonic-benchmark
+    volumes:
+      - ./results:/app/results
+    environment:
+      - PYTHONPATH=/app/src
+      - LOG_LEVEL=INFO
+    networks:
+      - photonic-network
+    command: ["python", "-m", "pytest", "tests/test_benchmarks_comprehensive.py", "-v"]
+    profiles: ["benchmark"]
+
+  redis:
+    image: redis:7-alpine
+    container_name: photonic-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - photonic-network
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    profiles: ["distributed"]
+
+  worker:
+    build: .
+    container_name: photonic-worker
+    depends_on:
+      - redis
+    environment:
+      - PYTHONPATH=/app/src
+      - REDIS_URL=redis://redis:6379/0
+    networks:
+      - photonic-network
+    command: ["python", "scripts/distributed_worker.py"]
+    profiles: ["distributed"]
+    deploy:
+      replicas: 3
+
+  monitoring:
+    image: prom/prometheus:latest
+    container_name: photonic-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - photonic-network
+    profiles: ["monitoring"]
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: photonic-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=photonic123
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+    networks:
+      - photonic-network
+    profiles: ["monitoring"]
+
+networks:
+  photonic-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+  grafana-data:
