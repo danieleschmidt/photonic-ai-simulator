@@ -11,8 +11,12 @@ import logging
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
-from .models import PhotonicNeuralNetwork
-from .core import NoiseType
+try:
+    from .models import PhotonicNeuralNetwork
+    from .core import NoiseType
+except ImportError:
+    from models import PhotonicNeuralNetwork
+    from core import NoiseType
 
 
 logger = logging.getLogger(__name__)
