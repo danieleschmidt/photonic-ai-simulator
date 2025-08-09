@@ -10,7 +10,10 @@ from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass
 import logging
 
-from .core import PhotonicProcessor, WavelengthConfig, ThermalConfig, FabricationConfig, OpticalSignal
+try:
+    from .core import PhotonicProcessor, WavelengthConfig, ThermalConfig, FabricationConfig, OpticalSignal
+except ImportError:
+    from core import PhotonicProcessor, WavelengthConfig, ThermalConfig, FabricationConfig, OpticalSignal
 
 
 logger = logging.getLogger(__name__)

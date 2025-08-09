@@ -16,9 +16,14 @@ from functools import lru_cache, wraps
 import multiprocessing as mp
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 
-from .core import PhotonicProcessor, WavelengthConfig
-from .models import PhotonicNeuralNetwork, MZILayer
-from .utils.logging_config import get_logger, log_function_performance
+try:
+    from .core import PhotonicProcessor, WavelengthConfig
+    from .models import PhotonicNeuralNetwork, MZILayer
+    from .utils.logging_config import get_logger, log_function_performance
+except ImportError:
+    from core import PhotonicProcessor, WavelengthConfig
+    from models import PhotonicNeuralNetwork, MZILayer
+    from utils.logging_config import get_logger, log_function_performance
 
 
 logger = get_logger(__name__)
@@ -751,8 +756,12 @@ def create_optimized_network(task: str = "mnist",
     Returns:
         Optimized photonic neural network
     """
-    from .models import LayerConfig
-    from .core import WavelengthConfig, ThermalConfig, FabricationConfig
+    try:
+        from .models import LayerConfig
+        from .core import WavelengthConfig, ThermalConfig, FabricationConfig
+    except ImportError:
+        from models import LayerConfig
+        from core import WavelengthConfig, ThermalConfig, FabricationConfig
     
     # Configure optimization based on level
     if optimization_level == "low":

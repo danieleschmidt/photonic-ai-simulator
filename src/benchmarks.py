@@ -12,8 +12,12 @@ import logging
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
-from .models import PhotonicNeuralNetwork, create_benchmark_network
-from .training import ForwardOnlyTrainer, TrainingConfig, HardwareAwareOptimizer
+try:
+    from .models import PhotonicNeuralNetwork, create_benchmark_network
+    from .training import ForwardOnlyTrainer, TrainingConfig, HardwareAwareOptimizer
+except ImportError:
+    from models import PhotonicNeuralNetwork, create_benchmark_network
+    from training import ForwardOnlyTrainer, TrainingConfig, HardwareAwareOptimizer
 
 
 logger = logging.getLogger(__name__)

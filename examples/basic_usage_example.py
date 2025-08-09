@@ -18,11 +18,19 @@ from pathlib import Path
 import sys
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from models import create_benchmark_network, PhotonicNeuralNetwork
-from training import ForwardOnlyTrainer, TrainingConfig
-from benchmarks import VowelClassificationBenchmark, BenchmarkConfig
-from optimization import create_optimized_network
-from utils.logging_config import setup_logging, get_logger
+try:
+    from models import create_benchmark_network, PhotonicNeuralNetwork
+    from training import ForwardOnlyTrainer, TrainingConfig
+    from benchmarks import VowelClassificationBenchmark, BenchmarkConfig
+    from optimization import create_optimized_network
+    from utils.logging_config import setup_logging, get_logger
+except ImportError:
+    # Try with package imports
+    from src.models import create_benchmark_network, PhotonicNeuralNetwork
+    from src.training import ForwardOnlyTrainer, TrainingConfig
+    from src.benchmarks import VowelClassificationBenchmark, BenchmarkConfig
+    from src.optimization import create_optimized_network
+    from src.utils.logging_config import setup_logging, get_logger
 
 # Set up logging
 setup_logging(level="INFO", enable_performance_logging=True)

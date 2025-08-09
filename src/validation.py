@@ -13,8 +13,12 @@ from enum import Enum
 import warnings
 from functools import wraps
 
-from .core import PhotonicProcessor, WavelengthConfig, ThermalConfig, FabricationConfig
-from .models import PhotonicNeuralNetwork
+try:
+    from .core import PhotonicProcessor, WavelengthConfig, ThermalConfig, FabricationConfig
+    from .models import PhotonicNeuralNetwork
+except ImportError:
+    from core import PhotonicProcessor, WavelengthConfig, ThermalConfig, FabricationConfig
+    from models import PhotonicNeuralNetwork
 
 
 logger = logging.getLogger(__name__)
