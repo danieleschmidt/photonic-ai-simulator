@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from enum import Enum
 import warnings
 from functools import wraps
+import time
 
 try:
     from .core import PhotonicProcessor, WavelengthConfig, ThermalConfig, FabricationConfig
