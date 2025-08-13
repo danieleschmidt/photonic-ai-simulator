@@ -10,6 +10,9 @@ from typing import Dict, List, Optional, Tuple, Union
 from dataclasses import dataclass
 from enum import Enum
 import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class NoiseType(Enum):
@@ -113,6 +116,14 @@ class PhotonicProcessor:
         Returns:
             Tuple of (output_1, output_2) representing the two MZI outputs
         """
+        # Input validation
+        if not isinstance(inputs, np.ndarray) or inputs.size == 0:
+            raise ValueError("Invalid input array: must be non-empty numpy array")
+        if not isinstance(phase_shift, (int, float)) or not np.isfinite(phase_shift):
+            raise ValueError("Phase shift must be a finite number")
+        if wavelength <= 0 or wavelength > 10000:
+            raise ValueError("Wavelength must be positive and realistic (0-10000nm)")
+            
         if self.enable_noise:
             # Add thermal noise to phase shift
             thermal_noise = np.random.normal(0, 0.1)  # Typical thermal fluctuation
@@ -122,15 +133,29 @@ class PhotonicProcessor:
             phase_shift = self.fabrication_config.apply_fabrication_noise(
                 np.array([phase_shift]))[0]
         
-        # Calculate MZI transfer functions
-        cos_term = np.cos(phase_shift / 2)
-        sin_term = np.sin(phase_shift / 2) * 1j
-        
-        # Split ratio and interference
-        output_1 = cos_term * inputs[0] + sin_term * inputs[1]
-        output_2 = sin_term * inputs[0] + cos_term * inputs[1]
-        
-        return output_1, output_2
+        # Calculate MZI transfer functions with bounds checking
+        try:
+            cos_term = np.cos(phase_shift / 2)
+            sin_term = np.sin(phase_shift / 2) * 1j
+            
+            # Ensure inputs have at least 2 elements for MZI operation
+            if len(inputs) < 2:
+                padded_inputs = np.pad(inputs, (0, 2-len(inputs)), 'constant')
+            else:
+                padded_inputs = inputs
+            
+            # Split ratio and interference
+            output_1 = cos_term * padded_inputs[0] + sin_term * padded_inputs[1]
+            output_2 = sin_term * padded_inputs[0] + cos_term * padded_inputs[1]
+            
+            # Validate outputs
+            if not np.all(np.isfinite(output_1)) or not np.all(np.isfinite(output_2)):
+                raise ValueError("MZI operation produced non-finite values")
+            
+            return output_1, output_2
+        except Exception as e:
+            logger.error(f"MZI operation failed: {e}")
+            raise ValueError(f"MZI operation error: {e}")
     
     def wavelength_multiplexed_operation(self, 
                                        inputs: np.ndarray,

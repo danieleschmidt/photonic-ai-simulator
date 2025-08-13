@@ -250,6 +250,7 @@ class WorkerNode:
         current_time = time.time()
         
         # Check error rate
+        error_rate = 0.0
         if self.total_requests > 0:
             error_rate = self.failed_requests / self.total_requests
             if error_rate > 0.1:  # 10% error rate threshold

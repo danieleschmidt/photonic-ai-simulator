@@ -112,6 +112,16 @@ class MZILayer:
         Returns:
             Layer outputs shaped (batch_size, output_dim, num_wavelengths)
         """
+        # Input validation and sanitization
+        if not isinstance(inputs, np.ndarray):
+            raise ValueError("Inputs must be numpy array")
+        if inputs.size == 0:
+            raise ValueError("Input array cannot be empty")
+        if not np.all(np.isfinite(inputs)):
+            raise ValueError("Input contains non-finite values (NaN/Inf)")
+        if np.any(np.abs(inputs) > 1e6):
+            logger.warning("Large input values detected, may cause numerical instability")
+        
         # Ensure inputs are in correct format
         if inputs.ndim == 2:
             # Add wavelength dimension
