@@ -1,32 +1,32 @@
 {
   "overall_passed": false,
-  "overall_score": 0.5305312056351532,
+  "overall_score": 0.779479211714093,
   "gates": {
     "Code Quality": {
       "name": "Code Quality",
       "passed": false,
-      "score": 0.6421248225406128,
+      "score": 0.6380513626187005,
       "details": {
         "complexity": {
-          "score": 0.20227272727272727,
-          "average_complexity": 52.72727272727273,
+          "score": 0.18863636363636366,
+          "average_complexity": 53.36363636363637,
           "max_complexity": 117,
           "files_analyzed": 22,
           "high_complexity_files": [
+            "src/autoscaling.py",
             "src/benchmarks.py",
             "src/cli.py",
+            "src/compliance.py",
             "src/core.py",
             "src/deployment.py",
+            "src/i18n.py",
             "src/models.py",
             "src/optimization.py",
+            "src/resilience.py",
             "src/scaling.py",
+            "src/security.py",
             "src/training.py",
             "src/validation.py",
-            "src/autoscaling.py",
-            "src/security.py",
-            "src/resilience.py",
-            "src/compliance.py",
-            "src/i18n.py",
             "src/experiments/ab_testing.py",
             "src/utils/data_processing.py",
             "src/utils/logging_config.py",
@@ -47,31 +47,31 @@
           "directory_structure": 1.0,
           "file_sizing": 1.0,
           "import_organization": 0.5227272727272727,
-          "average_file_size": 19187.272727272728,
+          "average_file_size": 19267.045454545456,
           "total_files": 22
         },
         "imports": {
           "score": 0.5,
-          "total_imports": 249,
-          "external_imports": 249,
+          "total_imports": 250,
+          "external_imports": 250,
           "internal_imports": 0,
           "unused_imports": 0,
           "circular_imports": []
         },
         "naming": {
-          "score": 0.9609569274543525,
+          "score": 0.9610732552476645,
           "total_violations": 111,
           "violations": [
-            "Variable X_train in src/benchmarks.py should be snake_case",
-            "Variable X_test in src/benchmarks.py should be snake_case",
-            "Variable X_normalized in src/benchmarks.py should be snake_case",
-            "Variable X_normalized in src/benchmarks.py should be snake_case",
-            "Variable X_train in src/benchmarks.py should be snake_case",
-            "Variable X_test in src/benchmarks.py should be snake_case",
-            "Variable X_normalized in src/benchmarks.py should be snake_case",
-            "Variable X_train in src/benchmarks.py should be snake_case",
-            "Variable X_test in src/benchmarks.py should be snake_case",
-            "Variable X_mean in src/benchmarks.py should be snake_case"
+            "Variable CPU in src/autoscaling.py should be snake_case",
+            "Variable MEMORY in src/autoscaling.py should be snake_case",
+            "Variable GPU in src/autoscaling.py should be snake_case",
+            "Variable NETWORK in src/autoscaling.py should be snake_case",
+            "Variable STORAGE in src/autoscaling.py should be snake_case",
+            "Variable STEADY in src/autoscaling.py should be snake_case",
+            "Variable PERIODIC in src/autoscaling.py should be snake_case",
+            "Variable BURST in src/autoscaling.py should be snake_case",
+            "Variable TRENDING in src/autoscaling.py should be snake_case",
+            "Variable RANDOM in src/autoscaling.py should be snake_case"
           ],
           "files_analyzed": 22
         }
@@ -79,7 +79,7 @@
       "recommendations": [
         "Improve code quality metrics to achieve 80% threshold"
       ],
-      "timestamp": 1755028664.4360955
+      "timestamp": 1755129416.7582743
     },
     "Security": {
       "name": "Security",
@@ -118,29 +118,26 @@
         "Review and remove any hardcoded credentials",
         "Update dependencies with known vulnerabilities"
       ],
-      "timestamp": 1755028664.4944518
+      "timestamp": 1755129416.8154027
     },
     "Performance": {
       "name": "Performance",
-      "passed": false,
-      "score": 0.0,
+      "passed": true,
+      "score": 0.9998654842376709,
       "details": {
         "import_performance": {
-          "score": 0.0,
-          "import_time_seconds": 0.0,
-          "status": "failed",
-          "error": "No module named 'numpy'"
+          "score": 1.0,
+          "import_time_seconds": 0.08776283264160156,
+          "status": "success"
         },
         "functionality_performance": {
-          "score": 0.0,
-          "status": "failed",
-          "error": "No module named 'numpy'"
+          "score": 0.9998078346252441,
+          "config_creation_time": 0.00019216537475585938,
+          "status": "success"
         }
       },
-      "recommendations": [
-        "Optimize performance bottlenecks identified in testing"
-      ],
-      "timestamp": 1755028664.4955854
+      "recommendations": [],
+      "timestamp": 1755129416.9034173
     },
     "Documentation": {
       "name": "Documentation",
@@ -172,12 +169,12 @@
         "Add more code examples and tutorials",
         "Ensure all public APIs are documented"
       ],
-      "timestamp": 1755028664.4975698
+      "timestamp": 1755129416.9045954
     }
   },
   "summary": {
     "total_gates": 4,
-    "passed_gates": 0,
-    "timestamp": 1755028664.497609
+    "passed_gates": 1,
+    "timestamp": 1755129416.904633
   }
 }
