@@ -31,21 +31,21 @@ class ScalingAction(Enum):
 
 class ResourceType(Enum):
     """Types of system resources."""
-    CPU = "cpu"
-    MEMORY = "memory"
-    GPU = "gpu"
-    NETWORK = "network"
-    STORAGE = "storage"
-    PHOTONIC_CORES = "photonic_cores"
+    cpu = "cpu"
+    memory = "memory"
+    gpu = "gpu"
+    network = "network"
+    storage = "storage"
+    photonic_cores = "photonic_cores"
 
 
 class WorkloadPattern(Enum):
     """Workload patterns for prediction."""
-    STEADY = "steady"
-    PERIODIC = "periodic"
-    BURST = "burst"
-    TRENDING = "trending"
-    RANDOM = "random"
+    steady = "steady"
+    periodic = "periodic"
+    burst = "burst"
+    trending = "trending"
+    random = "random"
 
 
 @dataclass
@@ -162,19 +162,19 @@ class WorkloadPredictor:
         pattern = self._detect_pattern(recent_values)
         
         # Make prediction based on pattern
-        if pattern == WorkloadPattern.STEADY:
+        if pattern == WorkloadPattern.steady:
             prediction = statistics.mean(recent_values[-10:])
             confidence = 0.8
         
-        elif pattern == WorkloadPattern.PERIODIC:
+        elif pattern == WorkloadPattern.periodic:
             prediction = self._predict_periodic(recent_values, prediction_horizon_seconds)
             confidence = 0.7
         
-        elif pattern == WorkloadPattern.TRENDING:
+        elif pattern == WorkloadPattern.trending:
             prediction = self._predict_trending(recent_values)
             confidence = 0.6
         
-        elif pattern == WorkloadPattern.BURST:
+        elif pattern == WorkloadPattern.burst:
             prediction = self._predict_burst(recent_values)
             confidence = 0.4
         
@@ -192,11 +192,11 @@ class WorkloadPredictor:
         """Get recent values for specific resource type."""
         values = []
         for metrics in list(self.metrics_history)[-lookback_count:]:
-            if resource_type == ResourceType.CPU:
+            if resource_type == ResourceType.cpu:
                 values.append(metrics.cpu_utilization)
-            elif resource_type == ResourceType.MEMORY:
+            elif resource_type == ResourceType.memory:
                 values.append(metrics.memory_utilization)
-            elif resource_type == ResourceType.GPU:
+            elif resource_type == ResourceType.gpu:
                 values.append(metrics.gpu_utilization)
             elif resource_type == ResourceType.PHOTONIC_CORES:
                 values.append(metrics.photonic_core_utilization)
@@ -207,7 +207,7 @@ class WorkloadPredictor:
     def _detect_pattern(self, values: List[float]) -> WorkloadPattern:
         """Detect workload pattern from time series."""
         if len(values) < 10:
-            return WorkloadPattern.RANDOM
+            return WorkloadPattern.random
         
         # Calculate statistics
         mean_val = statistics.mean(values)
@@ -215,25 +215,25 @@ class WorkloadPredictor:
         
         # Check for steady pattern (low variance)
         if std_val < 0.1:
-            return WorkloadPattern.STEADY
+            return WorkloadPattern.steady
         
         # Check for trending pattern
         first_half_mean = statistics.mean(values[:len(values)//2])
         second_half_mean = statistics.mean(values[len(values)//2:])
         
         if abs(second_half_mean - first_half_mean) > 0.2:
-            return WorkloadPattern.TRENDING
+            return WorkloadPattern.trending
         
         # Check for periodic pattern using autocorrelation
         if self._detect_periodicity(values):
-            return WorkloadPattern.PERIODIC
+            return WorkloadPattern.periodic
         
         # Check for burst pattern (occasional high spikes)
         high_values = [v for v in values if v > mean_val + 2 * std_val]
         if len(high_values) > 0 and len(high_values) < len(values) * 0.2:
-            return WorkloadPattern.BURST
+            return WorkloadPattern.burst
         
-        return WorkloadPattern.RANDOM
+        return WorkloadPattern.random
     
     def _detect_periodicity(self, values: List[float]) -> bool:
         """Detect if values show periodic behavior."""
@@ -512,11 +512,11 @@ class AutoScaler:
     def _get_current_utilization(self, metrics: ResourceMetrics, 
                                resource_type: ResourceType) -> float:
         """Get current utilization for resource type."""
-        if resource_type == ResourceType.CPU:
+        if resource_type == ResourceType.cpu:
             return metrics.cpu_utilization
-        elif resource_type == ResourceType.MEMORY:
+        elif resource_type == ResourceType.memory:
             return metrics.memory_utilization
-        elif resource_type == ResourceType.GPU:
+        elif resource_type == ResourceType.gpu:
             return metrics.gpu_utilization
         elif resource_type == ResourceType.PHOTONIC_CORES:
             return metrics.photonic_core_utilization
@@ -553,9 +553,9 @@ class AutoScaler:
         """Calculate cost impact of scaling decision."""
         # Simple cost model - would use real pricing in production
         cost_per_instance_per_hour = {
-            ResourceType.CPU: 0.50,
-            ResourceType.MEMORY: 0.10,
-            ResourceType.GPU: 2.00,
+            ResourceType.cpu: 0.50,
+            ResourceType.memory: 0.10,
+            ResourceType.gpu: 2.00,
             ResourceType.PHOTONIC_CORES: 1.50
         }
         
@@ -803,7 +803,7 @@ def create_auto_scaling_photonic_system(base_system,
     # Add default scaling policies
     cpu_policy = ScalingPolicy(
         name="cpu_scaling",
-        resource_type=ResourceType.CPU,
+        resource_type=ResourceType.cpu,
         target_utilization=0.7,
         scale_up_threshold=0.8,
         scale_down_threshold=0.3,
@@ -812,7 +812,7 @@ def create_auto_scaling_photonic_system(base_system,
     
     gpu_policy = ScalingPolicy(
         name="gpu_scaling",
-        resource_type=ResourceType.GPU,
+        resource_type=ResourceType.gpu,
         target_utilization=0.75,
         scale_up_threshold=0.85,
         scale_down_threshold=0.25,

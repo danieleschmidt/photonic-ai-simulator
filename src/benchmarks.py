@@ -89,9 +89,9 @@ class BaseBenchmark(ABC):
         logger.info(f"Starting {self.__class__.__name__} benchmark")
         
         # Load and preprocess data
-        X_train, X_test, y_train, y_test = self.load_data()
-        X_train, y_train = self.preprocess_data(X_train, y_train)
-        X_test, y_test = self.preprocess_data(X_test, y_test)
+        x_train, x_test, y_train, y_test = self.load_data()
+        x_train, y_train = self.preprocess_data(x_train, y_train)
+        x_test, y_test = self.preprocess_data(x_test, y_test)
         
         # Train model
         training_config = TrainingConfig(
@@ -103,13 +103,13 @@ class BaseBenchmark(ABC):
         )
         
         trainer = ForwardOnlyTrainer(model, training_config)
-        training_history = trainer.train(X_train, y_train)
+        training_history = trainer.train(x_train, y_train)
         
         # Run evaluation multiple times for statistical validation
         results = []
         for run in range(self.config.num_runs):
             logger.info(f"Evaluation run {run + 1}/{self.config.num_runs}")
-            result = self._evaluate_single_run(model, X_test, y_test)
+            result = self._evaluate_single_run(model, x_test, y_test)
             results.append(result)
         
         # Aggregate results with statistical analysis
@@ -125,20 +125,20 @@ class BaseBenchmark(ABC):
     
     def _evaluate_single_run(self, 
                            model: PhotonicNeuralNetwork,
-                           X_test: np.ndarray,
+                           x_test: np.ndarray,
                            y_test: np.ndarray) -> Dict[str, float]:
         """Evaluate model performance in a single run."""
         model.set_training(False)
         
         # Measure inference performance
         start_time = time.perf_counter_ns()
-        predictions, hardware_metrics = model.forward(X_test, measure_latency=True)
+        predictions, hardware_metrics = model.forward(x_test, measure_latency=True)
         end_time = time.perf_counter_ns()
         
         # Calculate metrics
         accuracy = self._calculate_accuracy(predictions, y_test)
         total_latency_ns = end_time - start_time
-        avg_latency_per_sample = total_latency_ns / len(X_test)
+        avg_latency_per_sample = total_latency_ns / len(x_test)
         
         # Hardware performance metrics
         power_consumption = hardware_metrics["total_power_mw"]
@@ -146,10 +146,10 @@ class BaseBenchmark(ABC):
                                         for m in hardware_metrics["layer_metrics"]])
         
         # Throughput calculation
-        throughput_ops = len(X_test) * 1e9 / total_latency_ns  # Operations per second
+        throughput_ops = len(x_test) * 1e9 / total_latency_ns  # Operations per second
         
         # Energy efficiency
-        energy_per_op_fj = (power_consumption * 1e-3 * total_latency_ns * 1e-9) / len(X_test) * 1e15
+        energy_per_op_fj = (power_consumption * 1e-3 * total_latency_ns * 1e-9) / len(x_test) * 1e15
         
         return {
             "accuracy": accuracy,
@@ -246,8 +246,8 @@ class MNISTBenchmark(BaseBenchmark):
         num_test = 200
         
         # Synthetic 28x28 images (784 features)
-        X_train = np.random.randn(num_train, 784) * 0.5 + 0.5
-        X_test = np.random.randn(num_test, 784) * 0.5 + 0.5
+        x_train = np.random.randn(num_train, 784) * 0.5 + 0.5
+        x_test = np.random.randn(num_test, 784) * 0.5 + 0.5
         
         # 10-class one-hot labels
         y_train = np.eye(10)[np.random.randint(0, 10, num_train)]
@@ -255,17 +255,17 @@ class MNISTBenchmark(BaseBenchmark):
         
         logger.info(f"Loaded synthetic MNIST data: {num_train} train, {num_test} test")
         
-        return X_train, X_test, y_train, y_test
+        return x_train, x_test, y_train, y_test
     
     def preprocess_data(self, X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """Preprocess data for photonic processing."""
         # Normalize to [0, 1] range for optical intensity encoding
-        X_normalized = (X - np.min(X)) / (np.max(X) - np.min(X) + 1e-8)
+        x_normalized = (X - np.min(X)) / (np.max(X) - np.min(X) + 1e-8)
         
         # Ensure non-negative values for optical power encoding
-        X_normalized = np.clip(X_normalized, 0, 1)
+        x_normalized = np.clip(x_normalized, 0, 1)
         
-        return X_normalized, y
+        return x_normalized, y
 
 
 class CIFAR10Benchmark(BaseBenchmark):
@@ -287,8 +287,8 @@ class CIFAR10Benchmark(BaseBenchmark):
         num_test = 200
         
         # Synthetic 32x32x3 images (3072 features)
-        X_train = np.random.randn(num_train, 3072) * 0.5 + 0.5
-        X_test = np.random.randn(num_test, 3072) * 0.5 + 0.5
+        x_train = np.random.randn(num_train, 3072) * 0.5 + 0.5
+        x_test = np.random.randn(num_test, 3072) * 0.5 + 0.5
         
         # 10-class one-hot labels
         y_train = np.eye(10)[np.random.randint(0, 10, num_train)]
@@ -296,12 +296,12 @@ class CIFAR10Benchmark(BaseBenchmark):
         
         logger.info(f"Loaded synthetic CIFAR-10 data: {num_train} train, {num_test} test")
         
-        return X_train, X_test, y_train, y_test
+        return x_train, x_test, y_train, y_test
     
     def preprocess_data(self, X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """Preprocess CIFAR-10 data for photonic processing."""
         # Normalize each channel independently
-        X_normalized = np.zeros_like(X)
+        x_normalized = np.zeros_like(X)
         for i in range(X.shape[0]):
             sample = X[i].reshape(32, 32, 3)
             for c in range(3):
@@ -309,9 +309,9 @@ class CIFAR10Benchmark(BaseBenchmark):
                 channel_norm = (channel - np.mean(channel)) / (np.std(channel) + 1e-8)
                 channel_norm = (channel_norm + 3) / 6  # Map to [0, 1] approximately
                 sample[:, :, c] = np.clip(channel_norm, 0, 1)
-            X_normalized[i] = sample.flatten()
+            x_normalized[i] = sample.flatten()
         
-        return X_normalized, y
+        return x_normalized, y
 
 
 class VowelClassificationBenchmark(BaseBenchmark):
@@ -335,8 +335,8 @@ class VowelClassificationBenchmark(BaseBenchmark):
         num_test = 120
         
         # Generate synthetic vowel features (10-dimensional as in MIT demo)
-        X_train = np.random.randn(num_train, 10) * 0.3 + 0.5
-        X_test = np.random.randn(num_test, 10) * 0.3 + 0.5
+        x_train = np.random.randn(num_train, 10) * 0.3 + 0.5
+        x_test = np.random.randn(num_test, 10) * 0.3 + 0.5
         
         # 6-class vowel labels (a, e, i, o, u, y)
         y_train = np.eye(6)[np.random.randint(0, 6, num_train)]
@@ -344,20 +344,20 @@ class VowelClassificationBenchmark(BaseBenchmark):
         
         logger.info(f"Loaded synthetic vowel data: {num_train} train, {num_test} test")
         
-        return X_train, X_test, y_train, y_test
+        return x_train, x_test, y_train, y_test
     
     def preprocess_data(self, X: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """Preprocess vowel data for photonic processing."""
         # Normalize features to optical intensity range
-        X_mean = np.mean(X, axis=0)
-        X_std = np.std(X, axis=0) + 1e-8
-        X_normalized = (X - X_mean) / X_std
+        x_mean = np.mean(X, axis=0)
+        x_std = np.std(X, axis=0) + 1e-8
+        x_normalized = (X - x_mean) / x_std
         
         # Map to [0, 1] for optical encoding
-        X_normalized = (X_normalized + 3) / 6
-        X_normalized = np.clip(X_normalized, 0, 1)
+        x_normalized = (x_normalized + 3) / 6
+        x_normalized = np.clip(x_normalized, 0, 1)
         
-        return X_normalized, y
+        return x_normalized, y
 
 
 def run_comprehensive_benchmarks(save_results: bool = True) -> Dict[str, BenchmarkResult]:

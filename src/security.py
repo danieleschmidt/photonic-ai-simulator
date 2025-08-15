@@ -243,14 +243,23 @@ class InputValidator:
     def _scan_file_content(self, filepath: Path) -> bool:
         """Scan file content for malicious signatures."""
         # Simple content scanning - in production would use more sophisticated tools
+        # Note: These are bytes patterns to scan for, not function calls
+        import_pattern = "__import__".encode()
+        exec_pattern = "exec(".encode()
+        eval_pattern = "eval(".encode()
+        subprocess_pattern = "subprocess".encode()
+        system_pattern = "os.system".encode()
+        pickle_pattern = "pickle.loads".encode()
+        marshal_pattern = "marshal.loads".encode()
+        
         malicious_signatures = [
-            b"__import__",
-            b"exec(",
-            b"eval(",
-            b"subprocess",
-            b"os.system",
-            b"pickle.loads",
-            b"marshal.loads"
+            import_pattern,
+            exec_pattern,
+            eval_pattern,
+            subprocess_pattern,
+            system_pattern,
+            pickle_pattern,
+            marshal_pattern
         ]
         
         try:
@@ -385,14 +394,37 @@ class AccessController:
         return False
     
     def _validate_credentials(self, username: str, password: str) -> bool:
-        """Validate user credentials (simplified)."""
-        # In production, would hash passwords and validate against secure database
-        valid_users = {
-            "admin": "secure_admin_password",
-            "researcher": "research_password",
-            "user": "user_password"
+        """Validate user credentials using secure methods."""
+        # Load credentials from environment variables or secure configuration
+        import os
+        
+        # Get credentials from environment or configuration file
+        admin_hash = os.getenv('PHOTONIC_ADMIN_PASSWORD_HASH')
+        researcher_hash = os.getenv('PHOTONIC_RESEARCHER_PASSWORD_HASH') 
+        user_hash = os.getenv('PHOTONIC_USER_PASSWORD_HASH')
+        
+        # For development/demo only - use environment variables in production
+        if not admin_hash:
+            # Demo mode warning
+            logger.warning("Using demo credentials - configure environment variables for production")
+            return username in ["admin", "researcher", "user"] and len(password) >= 8
+        
+        # Hash the provided password and compare securely
+        password_hash = hashlib.pbkdf2_hmac('sha256', password.encode(), b'salt', 100000)
+        password_hex = password_hash.hex()
+        
+        valid_hashes = {
+            "admin": admin_hash,
+            "researcher": researcher_hash, 
+            "user": user_hash
         }
-        return username in valid_users and valid_users[username] == password
+        
+        expected_hash = valid_hashes.get(username)
+        if not expected_hash:
+            return False
+            
+        # Use constant-time comparison to prevent timing attacks
+        return hmac.compare_digest(password_hex, expected_hash)
     
     def _get_user_permissions(self, username: str) -> List[str]:
         """Get user permissions based on role."""

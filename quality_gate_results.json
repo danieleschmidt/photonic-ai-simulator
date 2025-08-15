@@ -1,15 +1,15 @@
 {
   "overall_passed": false,
-  "overall_score": 0.779479211714093,
+  "overall_score": 0.8398109929565449,
   "gates": {
     "Code Quality": {
       "name": "Code Quality",
       "passed": false,
-      "score": 0.6380513626187005,
+      "score": 0.639340769769295,
       "details": {
         "complexity": {
           "score": 0.18863636363636366,
-          "average_complexity": 53.36363636363637,
+          "average_complexity": 53.45454545454545,
           "max_complexity": 117,
           "files_analyzed": 22,
           "high_complexity_files": [
@@ -47,31 +47,31 @@
           "directory_structure": 1.0,
           "file_sizing": 1.0,
           "import_organization": 0.5227272727272727,
-          "average_file_size": 19267.045454545456,
+          "average_file_size": 19331.363636363636,
           "total_files": 22
         },
         "imports": {
           "score": 0.5,
-          "total_imports": 250,
-          "external_imports": 250,
+          "total_imports": 251,
+          "external_imports": 251,
           "internal_imports": 0,
           "unused_imports": 0,
           "circular_imports": []
         },
         "naming": {
-          "score": 0.9610732552476645,
-          "total_violations": 111,
+          "score": 0.9696693029182945,
+          "total_violations": 83,
           "violations": [
-            "Variable CPU in src/autoscaling.py should be snake_case",
-            "Variable MEMORY in src/autoscaling.py should be snake_case",
-            "Variable GPU in src/autoscaling.py should be snake_case",
-            "Variable NETWORK in src/autoscaling.py should be snake_case",
-            "Variable STORAGE in src/autoscaling.py should be snake_case",
-            "Variable STEADY in src/autoscaling.py should be snake_case",
-            "Variable PERIODIC in src/autoscaling.py should be snake_case",
-            "Variable BURST in src/autoscaling.py should be snake_case",
-            "Variable TRENDING in src/autoscaling.py should be snake_case",
-            "Variable RANDOM in src/autoscaling.py should be snake_case"
+            "Variable X_test in src/cli.py should be snake_case",
+            "Variable X_test in src/cli.py should be snake_case",
+            "Variable X_test in src/cli.py should be snake_case",
+            "Variable PUBLIC in src/compliance.py should be snake_case",
+            "Variable INTERNAL in src/compliance.py should be snake_case",
+            "Variable CONFIDENTIAL in src/compliance.py should be snake_case",
+            "Variable RESTRICTED in src/compliance.py should be snake_case",
+            "Variable PERSONAL in src/compliance.py should be snake_case",
+            "Variable INFERENCE in src/compliance.py should be snake_case",
+            "Variable MONITORING in src/compliance.py should be snake_case"
           ],
           "files_analyzed": 22
         }
@@ -79,7 +79,7 @@
       "recommendations": [
         "Improve code quality metrics to achieve 80% threshold"
       ],
-      "timestamp": 1755129416.7582743
+      "timestamp": 1755262142.3094735
     },
     "Security": {
       "name": "Security",
@@ -118,31 +118,31 @@
         "Review and remove any hardcoded credentials",
         "Update dependencies with known vulnerabilities"
       ],
-      "timestamp": 1755129416.8154027
+      "timestamp": 1755262142.3683872
     },
     "Performance": {
       "name": "Performance",
       "passed": true,
-      "score": 0.9998654842376709,
+      "score": 0.9999032020568848,
       "details": {
         "import_performance": {
           "score": 1.0,
-          "import_time_seconds": 0.08776283264160156,
+          "import_time_seconds": 0.08341193199157715,
           "status": "success"
         },
         "functionality_performance": {
-          "score": 0.9998078346252441,
-          "config_creation_time": 0.00019216537475585938,
+          "score": 0.9998617172241211,
+          "config_creation_time": 0.00013828277587890625,
           "status": "success"
         }
       },
       "recommendations": [],
-      "timestamp": 1755129416.9034173
+      "timestamp": 1755262142.4519918
     },
     "Documentation": {
       "name": "Documentation",
-      "passed": false,
-      "score": 0.7,
+      "passed": true,
+      "score": 0.94,
       "details": {
         "readme": {
           "score": 1.0,
@@ -157,24 +157,20 @@
           "note": "Based on docstring coverage analysis"
         },
         "examples": {
-          "score": 0.2,
-          "python_examples": 1,
+          "score": 1.0,
+          "python_examples": 5,
           "notebook_examples": 0,
-          "total_examples": 1,
+          "total_examples": 5,
           "status": "exists"
         }
       },
-      "recommendations": [
-        "Improve README.md with comprehensive documentation",
-        "Add more code examples and tutorials",
-        "Ensure all public APIs are documented"
-      ],
-      "timestamp": 1755129416.9045954
+      "recommendations": [],
+      "timestamp": 1755262142.453193
     }
   },
   "summary": {
     "total_gates": 4,
-    "passed_gates": 1,
-    "timestamp": 1755129416.904633
+    "passed_gates": 2,
+    "timestamp": 1755262142.453225
   }
 }
