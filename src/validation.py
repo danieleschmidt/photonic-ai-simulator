@@ -603,3 +603,78 @@ class HealthMonitor:
             "monitoring_duration_hours": (self.health_history[-1]["timestamp"] - 
                                         self.health_history[0]["timestamp"]) / 3600
         }
+
+
+def validate_performance_targets(model: PhotonicNeuralNetwork,
+                               X: np.ndarray,
+                               y: np.ndarray,
+                               targets: Dict[str, float],
+                               tolerance: float = 0.1) -> Dict[str, Any]:
+    """
+    Validate model performance against specified targets.
+    
+    Args:
+        model: Photonic neural network to validate
+        X: Test input data
+        y: Test labels
+        targets: Performance targets dictionary
+        tolerance: Tolerance for meeting targets (10% default)
+        
+    Returns:
+        Validation results dictionary
+    """
+    logger.info("Starting performance validation")
+    
+    # Run inference and measure performance
+    start_time = time.perf_counter_ns()
+    predictions, metrics = model.forward(X, measure_latency=True)
+    end_time = time.perf_counter_ns()
+    
+    # Calculate accuracy
+    pred_classes = np.argmax(predictions, axis=1)
+    true_classes = np.argmax(y, axis=1)
+    accuracy = np.mean(pred_classes == true_classes)
+    
+    # Measured performance
+    measured = {
+        "accuracy": accuracy,
+        "latency_ns": metrics["total_latency_ns"] / len(X),  # Per sample
+        "power_mw": metrics["total_power_mw"],
+        "throughput_samples_per_sec": len(X) / ((end_time - start_time) * 1e-9)
+    }
+    
+    # Check against targets
+    pass_criteria = {}
+    for metric, target in targets.items():
+        if metric in measured:
+            if metric == "accuracy":
+                # For accuracy, measured should be >= target
+                pass_criteria[metric] = measured[metric] >= target * (1 - tolerance)
+            else:
+                # For latency and power, measured should be <= target
+                pass_criteria[metric] = measured[metric] <= target * (1 + tolerance)
+        else:
+            pass_criteria[metric] = False
+    
+    overall_pass = all(pass_criteria.values())
+    
+    # Generate recommendations
+    recommendations = []
+    if not pass_criteria.get("accuracy", True):
+        recommendations.append("Consider increasing training epochs or adjusting learning rate")
+    if not pass_criteria.get("latency_ns", True):
+        recommendations.append("Optimize network architecture for lower latency")
+    if not pass_criteria.get("power_mw", True):
+        recommendations.append("Reduce power consumption through weight quantization")
+    
+    results = {
+        "measured": measured,
+        "targets": targets,
+        "pass": pass_criteria,
+        "overall_pass": overall_pass,
+        "tolerance": tolerance,
+        "recommendations": recommendations
+    }
+    
+    logger.info(f"Validation completed - Overall: {'PASS' if overall_pass else 'FAIL'}")
+    return results
