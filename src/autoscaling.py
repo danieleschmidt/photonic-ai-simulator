@@ -198,7 +198,7 @@ class WorkloadPredictor:
                 values.append(metrics.memory_utilization)
             elif resource_type == ResourceType.gpu:
                 values.append(metrics.gpu_utilization)
-            elif resource_type == ResourceType.PHOTONIC_CORES:
+            elif resource_type == ResourceType.photonic_cores:
                 values.append(metrics.photonic_core_utilization)
             else:
                 values.append(0.5)  # Default fallback
@@ -518,7 +518,7 @@ class AutoScaler:
             return metrics.memory_utilization
         elif resource_type == ResourceType.gpu:
             return metrics.gpu_utilization
-        elif resource_type == ResourceType.PHOTONIC_CORES:
+        elif resource_type == ResourceType.photonic_cores:
             return metrics.photonic_core_utilization
         else:
             return 0.5  # Default fallback
@@ -556,7 +556,7 @@ class AutoScaler:
             ResourceType.cpu: 0.50,
             ResourceType.memory: 0.10,
             ResourceType.gpu: 2.00,
-            ResourceType.PHOTONIC_CORES: 1.50
+            ResourceType.photonic_cores: 1.50
         }
         
         base_cost = cost_per_instance_per_hour.get(resource_type, 1.0)
@@ -823,7 +823,7 @@ def create_auto_scaling_photonic_system(base_system,
     
     photonic_policy = ScalingPolicy(
         name="photonic_scaling",
-        resource_type=ResourceType.PHOTONIC_CORES,
+        resource_type=ResourceType.photonic_cores,
         target_utilization=0.8,
         scale_up_threshold=0.9,
         scale_down_threshold=0.4,

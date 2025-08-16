@@ -632,7 +632,6 @@ class SecurePhotonicSystem:
         self.audit_log = []
         self.active_sessions = set()
         
-    @require_authentication
     def secure_inference(self, session_token: str, inputs: Any, 
                         model_name: str = "default") -> Any:
         """
@@ -646,6 +645,14 @@ class SecurePhotonicSystem:
         Returns:
             Inference results
         """
+        # Check authentication
+        if not self.access_controller.validate_session(session_token):
+            raise SecurityError("Authentication required")
+        
+        # Check permissions
+        if not self.access_controller.check_permission(session_token, "inference", model_name):
+            raise SecurityError("Permission denied")
+        
         # Security assessment
         assessment = self.security_monitor.monitor_inference_request(
             session_token, inputs, model_name
@@ -677,7 +684,6 @@ class SecurePhotonicSystem:
             )
             raise
     
-    @require_permission(action="train", resource="models")
     def secure_training(self, session_token: str, training_data: Any,
                        training_config: Dict[str, Any]) -> Any:
         """
@@ -691,6 +697,14 @@ class SecurePhotonicSystem:
         Returns:
             Training results
         """
+        # Check authentication
+        if not self.access_controller.validate_session(session_token):
+            raise SecurityError("Authentication required")
+        
+        # Check permissions
+        if not self.access_controller.check_permission(session_token, "train", "models"):
+            raise SecurityError("Permission denied")
+        
         # Validate configuration
         self.validator.validate_model_configuration(training_config)
         

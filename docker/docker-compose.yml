@@ -1,0 +1,231 @@
+# Production Docker Compose for Photonic AI Simulator
+# Includes API server, workers, monitoring, and load balancing
+
+version: '3.8'
+
+services:
+  # Main API Server
+  photonic-api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: production
+    image: photonic-ai:latest
+    container_name: photonic-api
+    restart: unless-stopped
+    command: ["api"]
+    ports:
+      - "8000:8000"
+    environment:
+      - PHOTONIC_LOG_LEVEL=INFO
+      - PHOTONIC_ENABLE_GPU=true
+      - PHOTONIC_ENABLE_MONITORING=true
+      - PHOTONIC_REQUIRE_AUTH=true
+      - PHOTONIC_WORKER_COUNT=4
+      - PHOTONIC_BATCH_SIZE=32
+      - PHOTONIC_CACHE_SIZE_MB=512
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - photonic-data:/app/data
+      - photonic-logs:/app/logs
+      - photonic-models:/app/models
+    depends_on:
+      - redis
+      - prometheus
+    networks:
+      - photonic-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "python", "/app/healthcheck.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Background Workers for Heavy Processing
+  photonic-worker:
+    image: photonic-ai:latest
+    command: ["worker"]
+    restart: unless-stopped
+    scale: 2
+    environment:
+      - PHOTONIC_LOG_LEVEL=INFO
+      - PHOTONIC_ENABLE_GPU=true
+      - PHOTONIC_WORKER_COUNT=2
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - photonic-data:/app/data
+      - photonic-logs:/app/logs
+      - photonic-models:/app/models
+    depends_on:
+      - redis
+    networks:
+      - photonic-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Task Scheduler
+  photonic-scheduler:
+    image: photonic-ai:latest
+    container_name: photonic-scheduler
+    command: ["scheduler"]
+    restart: unless-stopped
+    environment:
+      - PHOTONIC_LOG_LEVEL=INFO
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - photonic-data:/app/data
+      - photonic-logs:/app/logs
+    depends_on:
+      - redis
+    networks:
+      - photonic-network
+
+  # Redis for Caching and Task Queue
+  redis:
+    image: redis:7-alpine
+    container_name: photonic-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - photonic-network
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+
+  # NGINX Load Balancer
+  nginx:
+    image: nginx:alpine
+    container_name: photonic-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - photonic-logs:/var/log/nginx
+    depends_on:
+      - photonic-api
+    networks:
+      - photonic-network
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: photonic-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - photonic-network
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: photonic-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - prometheus
+    networks:
+      - photonic-network
+
+  # Log Aggregation
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    container_name: photonic-elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - photonic-network
+
+  # Kibana for Log Visualization
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.8.0
+    container_name: photonic-kibana
+    restart: unless-stopped
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - photonic-network
+
+  # Log Shipping
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.8.0
+    container_name: photonic-filebeat
+    restart: unless-stopped
+    user: root
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - photonic-logs:/var/log/photonic:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - elasticsearch
+    networks:
+      - photonic-network
+
+networks:
+  photonic-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  photonic-data:
+    driver: local
+  photonic-logs:
+    driver: local
+  photonic-models:
+    driver: local
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+  elasticsearch-data:
+    driver: local
