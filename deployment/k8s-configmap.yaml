@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: photonic-ai-config
+data:
+  environment: "development"
+  database_host: "localhost"
+  database_port: "5432"
+  database_name: "photonic_ai_prod"
+  redis_host: "localhost"
+  redis_port: "6379"
+  log_level: "INFO"
+  feature_flags: |
+adaptive_wavelengths: true
+federated_learning: true
+neural_architecture_search: true
+quantum_enhancement: true
+self_healing: true
+
