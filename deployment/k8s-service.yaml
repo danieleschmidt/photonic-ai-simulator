@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: photonic-ai-service
+  labels:
+    app: photonic-ai
+spec:
+  selector:
+    app: photonic-ai
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: photonic-ai-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rate-limit: "1000"
+spec:
+  tls:
+  - hosts:
+    - photonic-ai.com
+    secretName: photonic-ai-tls
+  rules:
+  - host: photonic-ai.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: photonic-ai-service
+            port:
+              number: 80

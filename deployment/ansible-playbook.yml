@@ -1,0 +1,72 @@
+---
+- name: Deploy Photonic AI System
+  hosts: all
+  become: yes
+  vars:
+    app_name: "photonic-ai-system"
+    app_version: "1.0.0"
+    app_port: 8080
+    environment: "development"
+    
+  tasks:
+    - name: Update system packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+      
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        
+    - name: Install Docker Compose
+      pip:
+        name: docker-compose
+        state: present
+        
+    - name: Create application directory
+      file:
+        path: /opt/{{ app_name }}
+        state: directory
+        mode: '0755'
+        
+    - name: Copy Docker Compose file
+      copy:
+        src: docker-compose.yml
+        dest: /opt/{{ app_name }}/docker-compose.yml
+        mode: '0644'
+        
+    - name: Copy application configuration
+      template:
+        src: production.yaml.j2
+        dest: /opt/{{ app_name }}/production.yaml
+        mode: '0640'
+        
+    - name: Start services
+      docker_compose:
+        project_src: /opt/{{ app_name }}
+        state: present
+        
+    - name: Configure nginx
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/sites-available/{{ app_name }}
+      notify: restart nginx
+      
+    - name: Enable nginx site
+      file:
+        src: /etc/nginx/sites-available/{{ app_name }}
+        dest: /etc/nginx/sites-enabled/{{ app_name }}
+        state: link
+      notify: restart nginx
+      
+    - name: Configure firewall
+      ufw:
+        rule: allow
+        port: '{{ app_port }}'
+        
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted

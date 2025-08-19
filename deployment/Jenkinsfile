@@ -1,0 +1,91 @@
+pipeline {
+    agent any
+    
+    environment {
+        APP_NAME = 'photonic-ai-system'
+        APP_VERSION = '1.0.0'
+        DOCKER_REGISTRY = 'registry.photonic-ai.com'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/photonic-ai/system.git'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                sh 'python -m pip install -r requirements.txt'
+                sh 'python validate_system.py'
+            }
+            post {
+                always {
+                    junit 'test-results.xml'
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'coverage',
+                        reportFiles: 'index.html',
+                        reportName: 'Coverage Report'
+                    ])
+                }
+            }
+        }
+        
+        stage('Security Scan') {
+            steps {
+                sh 'docker run --rm -v $(pwd):/app owasp/zap2docker-stable zap-baseline.py -t /app'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                sh 'docker build -t ${DOCKER_REGISTRY}/${APP_NAME}:${APP_VERSION} .'
+                sh 'docker push ${DOCKER_REGISTRY}/${APP_NAME}:${APP_VERSION}'
+            }
+        }
+        
+        stage('Deploy to Staging') {
+            steps {
+                sh 'helm upgrade --install photonic-ai-staging ./helm-chart --set image.tag=${APP_VERSION} --set environment=staging'
+            }
+        }
+        
+        stage('Integration Tests') {
+            steps {
+                sh 'python integration_tests.py --environment=staging'
+            }
+        }
+        
+        stage('Deploy to Production') {
+            when {
+                branch 'main'
+            }
+            steps {
+                input message: 'Deploy to Production?', ok: 'Deploy'
+                sh 'helm upgrade --install photonic-ai-prod ./helm-chart --set image.tag=${APP_VERSION} --set environment=production'
+            }
+        }
+        
+        stage('Health Check') {
+            steps {
+                sh 'curl -f https://photonic-ai.com/health'
+            }
+        }
+    }
+    
+    post {
+        always {
+            cleanWs()
+        }
+        failure {
+            emailext (
+                subject: "Pipeline Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
+                body: "The pipeline has failed. Please check the logs.",
+                to: "ops@photonic-ai.com"
+            )
+        }
+    }
+}
