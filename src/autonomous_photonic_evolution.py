@@ -96,6 +96,14 @@ class EvolutionConfig:
     novelty_weight: float = 0.2
     exploration_bonus: float = 0.1
     diversity_pressure: float = 0.15
+    
+    # Next-generation autonomous features
+    adaptive_mutation: bool = True
+    multi_objective_optimization: bool = True
+    novelty_search: bool = True
+    quantum_evolutionary_operators: bool = True
+    neuromorphic_mutation_patterns: bool = True
+    autonomous_objective_discovery: bool = True
 
 
 @dataclass

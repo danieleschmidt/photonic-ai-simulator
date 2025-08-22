@@ -95,6 +95,28 @@ class SystemMetrics:
         return {k: v for k, v in asdict(self).items() if v is not None}
 
 
+class PerformanceMonitor:
+    """Simplified performance monitor for basic usage."""
+    
+    def __init__(self):
+        self.metrics_history = []
+        self.start_time = time.time()
+        logger.info("Performance monitor initialized")
+    
+    def record_metrics(self, metrics: SystemMetrics):
+        """Record system metrics."""
+        self.metrics_history.append(metrics)
+    
+    def get_latest_metrics(self) -> Optional[SystemMetrics]:
+        """Get latest recorded metrics."""
+        return self.metrics_history[-1] if self.metrics_history else None
+    
+    def get_average_latency(self) -> float:
+        """Get average latency from recorded metrics."""
+        latencies = [m.latency_ns for m in self.metrics_history if m.latency_ns is not None]
+        return np.mean(latencies) if latencies else 0.0
+
+
 class MetricCollector(ABC):
     """Abstract base class for metric collectors."""
     
