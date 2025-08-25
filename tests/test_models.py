@@ -97,7 +97,9 @@ class TestMZILayer:
         grad_output = np.random.randn(*outputs.shape).astype(complex)
         grad_input = mzi_layer.backward(grad_output, inputs)
         
-        assert grad_input.shape == inputs.shape + (2,)  # Add wavelength dimension
+        # Grad input should match input shape
+        assert grad_input.shape == inputs.shape
+        assert not np.isnan(grad_input).any()
         assert len(mzi_layer.weight_updates) == 1
     
     def test_weight_updates(self, mzi_layer):

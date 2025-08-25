@@ -1,0 +1,203 @@
+{
+  "overall_status": "failed",
+  "test_coverage_percentage": 50.0,
+  "total_tests": 22,
+  "passed_tests": 0,
+  "failed_tests": 22,
+  "execution_time_s": 0.8253618830000278,
+  "performance_benchmarks": {
+    "inference_latency_ns": false,
+    "memory_usage_mb": true,
+    "throughput_ops_per_sec": true
+  },
+  "security_scan_results": {
+    "vulnerability_scan": "passed",
+    "dependency_check": "passed",
+    "code_analysis": "passed",
+    "encryption_validation": "passed"
+  },
+  "code_quality_score": 8.5,
+  "detailed_results": [
+    {
+      "test_name": "CoreComponentTests.test_mach_zehnder_operation",
+      "status": "failed",
+      "execution_time_s": 0.0028026560000284917,
+      "error_message": "[(<__main__.CoreComponentTests testMethod=test_mach_zehnder_operation>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'CoreComponentTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "CoreComponentTests.test_nonlinear_optical_function_unit",
+      "status": "failed",
+      "execution_time_s": 0.0019342229999779192,
+      "error_message": "[(<__main__.CoreComponentTests testMethod=test_nonlinear_optical_function_unit>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'CoreComponentTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "CoreComponentTests.test_photonic_processor_initialization",
+      "status": "failed",
+      "execution_time_s": 0.0017629570000394779,
+      "error_message": "[(<__main__.CoreComponentTests testMethod=test_photonic_processor_initialization>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'CoreComponentTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "CoreComponentTests.test_thermal_drift_compensation",
+      "status": "failed",
+      "execution_time_s": 0.0018302369999787516,
+      "error_message": "[(<__main__.CoreComponentTests testMethod=test_thermal_drift_compensation>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'CoreComponentTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "CoreComponentTests.test_wavelength_multiplexed_operation",
+      "status": "failed",
+      "execution_time_s": 0.001758666999990055,
+      "error_message": "[(<__main__.CoreComponentTests testMethod=test_wavelength_multiplexed_operation>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'CoreComponentTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ModelTests.test_forward_pass",
+      "status": "failed",
+      "execution_time_s": 0.0018137159999582764,
+      "error_message": "[(<__main__.ModelTests testMethod=test_forward_pass>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ModelTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ModelTests.test_photonic_neural_network_creation",
+      "status": "failed",
+      "execution_time_s": 0.0017275160000167489,
+      "error_message": "[(<__main__.ModelTests testMethod=test_photonic_neural_network_creation>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ModelTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ResearchInnovationTests.test_adaptive_wavelength_manager",
+      "status": "failed",
+      "execution_time_s": 0.0018306789999655848,
+      "error_message": "[(<__main__.ResearchInnovationTests testMethod=test_adaptive_wavelength_manager>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ResearchInnovationTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ResearchInnovationTests.test_neural_architecture_search",
+      "status": "failed",
+      "execution_time_s": 0.0017331169999579288,
+      "error_message": "[(<__main__.ResearchInnovationTests testMethod=test_neural_architecture_search>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ResearchInnovationTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ResearchInnovationTests.test_quantum_enhanced_processor",
+      "status": "failed",
+      "execution_time_s": 0.0017575950000150442,
+      "error_message": "[(<__main__.ResearchInnovationTests testMethod=test_quantum_enhanced_processor>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ResearchInnovationTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ResearchInnovationTests.test_self_healing_network",
+      "status": "failed",
+      "execution_time_s": 0.001733927000032054,
+      "error_message": "[(<__main__.ResearchInnovationTests testMethod=test_self_healing_network>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ResearchInnovationTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "FederatedLearningTests.test_client_local_training",
+      "status": "failed",
+      "execution_time_s": 0.001758065999979408,
+      "error_message": "[(<__main__.FederatedLearningTests testMethod=test_client_local_training>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'FederatedLearningTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "FederatedLearningTests.test_federated_system_creation",
+      "status": "failed",
+      "execution_time_s": 0.002119695999965643,
+      "error_message": "[(<__main__.FederatedLearningTests testMethod=test_federated_system_creation>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'FederatedLearningTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ScalingTests.test_auto_scaler",
+      "status": "failed",
+      "execution_time_s": 0.0017732599999931153,
+      "error_message": "[(<__main__.ScalingTests testMethod=test_auto_scaler>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ScalingTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ScalingTests.test_high_performance_processing_pool",
+      "status": "failed",
+      "execution_time_s": 0.0018029699999715376,
+      "error_message": "[(<__main__.ScalingTests testMethod=test_high_performance_processing_pool>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ScalingTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ScalingTests.test_resource_manager",
+      "status": "failed",
+      "execution_time_s": 0.0017326770000067881,
+      "error_message": "[(<__main__.ScalingTests testMethod=test_resource_manager>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ScalingTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "SecurityTests.test_data_encryption_decryption",
+      "status": "failed",
+      "execution_time_s": 0.001782244000025912,
+      "error_message": "[(<__main__.SecurityTests testMethod=test_data_encryption_decryption>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'SecurityTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "SecurityTests.test_security_manager_initialization",
+      "status": "failed",
+      "execution_time_s": 0.0016837969999983216,
+      "error_message": "[(<__main__.SecurityTests testMethod=test_security_manager_initialization>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'SecurityTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ErrorHandlingTests.test_error_handler",
+      "status": "failed",
+      "execution_time_s": 0.0017775989999790909,
+      "error_message": "[(<__main__.ErrorHandlingTests testMethod=test_error_handler>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ErrorHandlingTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "ErrorHandlingTests.test_photonic_error_types",
+      "status": "failed",
+      "execution_time_s": 0.001703603999999359,
+      "error_message": "[(<__main__.ErrorHandlingTests testMethod=test_photonic_error_types>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'ErrorHandlingTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "PerformanceTests.test_inference_latency",
+      "status": "failed",
+      "execution_time_s": 0.001783020999994278,
+      "error_message": "[(<__main__.PerformanceTests testMethod=test_inference_latency>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'PerformanceTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    },
+    {
+      "test_name": "PerformanceTests.test_memory_efficiency",
+      "status": "failed",
+      "execution_time_s": 0.0017086330000211092,
+      "error_message": "[(<__main__.PerformanceTests testMethod=test_memory_efficiency>, 'Traceback (most recent call last):\\n  File \"/root/repo/src/quality_gates.py\", line 138, in setUp\\n    self.logger.debug(f\"Starting test: {self._testMethodName}\")\\n    ^^^^^^^^^^^\\nAttributeError: \\'PerformanceTests\\' object has no attribute \\'logger\\'\\n')]",
+      "coverage_percentage": null,
+      "performance_metrics": null
+    }
+  ],
+  "recommendations": [
+    "Increase test coverage to 85.0% (currently 50.0%)",
+    "Fix 22 failing tests to meet quality standards",
+    "Improve performance for: inference_latency_ns"
+  ]
+}
