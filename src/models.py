@@ -172,7 +172,14 @@ class MZILayer:
         # Compute gradients with respect to weights
         weight_grad = np.zeros_like(self.weights)
         for w in range(self.processor.wavelength_config.num_channels):
-            weight_grad[:, :, w] = (layer_input[:, :, w].T.conj() @ grad_output[:, :, w]) / batch_size
+            # Handle 2D input arrays by expanding to wavelength dimension if needed
+            if layer_input.ndim == 2:
+                input_w = np.expand_dims(layer_input, axis=-1)[:, :, 0]
+                grad_w = np.expand_dims(grad_output, axis=-1)[:, :, w] if grad_output.ndim == 2 else grad_output[:, :, w]
+            else:
+                input_w = layer_input[:, :, w]
+                grad_w = grad_output[:, :, w]
+            weight_grad[:, :, w] = (input_w.T.conj() @ grad_w) / batch_size
         
         # Store for parameter updates
         self.weight_updates.append(weight_grad)
@@ -180,7 +187,14 @@ class MZILayer:
         # Compute gradient with respect to input
         input_grad = np.zeros_like(layer_input)
         for w in range(self.processor.wavelength_config.num_channels):
-            input_grad[:, :, w] = grad_output[:, :, w] @ self.weights[:, :, w].T.conj()
+            # Handle dimensional mismatches
+            if layer_input.ndim == 2:
+                grad_w = np.expand_dims(grad_output, axis=-1)[:, :, w] if grad_output.ndim == 2 else grad_output[:, :, w]
+                input_grad_w = grad_w @ self.weights[:, :, w].T.conj()
+                if w == 0:  # Only assign once for 2D case
+                    input_grad[:, :] = np.real(input_grad_w)  # Convert to real for 2D inputs
+            else:
+                input_grad[:, :, w] = grad_output[:, :, w] @ self.weights[:, :, w].T.conj()
         
         return input_grad
     
