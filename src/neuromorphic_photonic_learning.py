@@ -194,7 +194,9 @@ class NeuromorphicPhotonicNetwork:
     def __init__(self, 
                  layer_sizes: List[int],
                  config: NeuromorphicConfig = None,
-                 wavelength_config: WavelengthConfig = None):
+                 wavelength_config: WavelengthConfig = None,
+                 thermal_config: ThermalConfig = None,
+                 fabrication_config = None):
         self.config = config or NeuromorphicConfig()
         self.wavelength_config = wavelength_config or WavelengthConfig()
         self.layer_sizes = layer_sizes

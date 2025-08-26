@@ -946,3 +946,55 @@ def benchmark_distributed_system(server: DistributedInferenceServer,
     logger.info(f"Benchmark completed: {throughput_rps:.1f} RPS, {avg_latency_ms:.2f}ms avg latency")
     
     return results
+
+
+@dataclass
+class ScalingConfig:
+    """Configuration for auto-scaling manager."""
+    min_instances: int = 1
+    max_instances: int = 10
+    scale_up_threshold: float = 0.75
+    scale_down_threshold: float = 0.25
+    target_latency_ms: float = 100.0
+    cooldown_period_s: float = 300.0
+
+
+class AutoScalingManager:
+    """Intelligent auto-scaling manager for photonic neural networks."""
+    
+    def __init__(self, config: ScalingConfig = None):
+        self.config = config or ScalingConfig()
+        self.current_instances = self.config.min_instances
+        self.last_scaling_time = 0.0
+        logger.info("AutoScalingManager initialized")
+    
+    def evaluate_scaling(self, metrics: Dict[str, float]) -> Dict[str, Any]:
+        """Evaluate scaling decisions based on metrics."""
+        current_time = time.time()
+        cooldown_elapsed = current_time - self.last_scaling_time
+        
+        if cooldown_elapsed < self.config.cooldown_period_s:
+            return {"action": "none", "reason": "cooldown_period"}
+        
+        cpu_util = metrics.get('avg_cpu_utilization', 0.0)
+        latency_ms = metrics.get('avg_latency_ms', 0.0)
+        
+        # Scale up decision
+        if (cpu_util > self.config.scale_up_threshold or 
+            latency_ms > self.config.target_latency_ms) and \
+           self.current_instances < self.config.max_instances:
+            
+            self.current_instances += 1
+            self.last_scaling_time = current_time
+            return {"action": "scale_up", "instances": self.current_instances}
+        
+        # Scale down decision
+        elif (cpu_util < self.config.scale_down_threshold and 
+              latency_ms < self.config.target_latency_ms * 0.5) and \
+             self.current_instances > self.config.min_instances:
+            
+            self.current_instances -= 1
+            self.last_scaling_time = current_time
+            return {"action": "scale_down", "instances": self.current_instances}
+        
+        return {"action": "none", "instances": self.current_instances}

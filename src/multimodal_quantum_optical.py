@@ -434,7 +434,9 @@ class MultiModalQuantumOpticalNetwork:
                  architecture_config: Dict[str, Any],
                  multimodal_config: MultiModalConfig = None,
                  wavelength_config: WavelengthConfig = None,
-                 quantum_config: QuantumEnhancementConfig = None):
+                 quantum_config: QuantumEnhancementConfig = None,
+                 thermal_config: ThermalConfig = None,
+                 fabrication_config = None):
         
         self.architecture_config = architecture_config
         self.multimodal_config = multimodal_config or MultiModalConfig()

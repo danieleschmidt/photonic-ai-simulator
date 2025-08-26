@@ -473,7 +473,7 @@ class NextGenerationBenchmarkSuite:
         
         # Statistical analysis tools
         self.statistical_analyzer = StatisticalAnalyzer(config)
-        self.reproducibility_framework = ReproducibilityFramework()
+        self.reproducibility_framework = ReproducibilityFramework("next_generation_benchmark", 42)
         
         # Visualization tools
         self.visualization_enabled = True
