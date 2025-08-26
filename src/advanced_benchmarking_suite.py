@@ -460,7 +460,7 @@ class ComprehensiveBenchmarkSuite:
         
         # Statistical validation
         self.hypothesis_test = HypothesisTest()
-        self.reproducibility_framework = ReproducibilityFramework()
+        self.reproducibility_framework = ReproducibilityFramework("advanced_benchmark", 42)
         
         # Reporting
         self.report_data: Dict[str, Any] = {}

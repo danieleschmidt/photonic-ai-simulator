@@ -125,9 +125,10 @@ def test_neuromorphic_learning():
         
         # Create neuromorphic network
         network = NeuromorphicPhotonicNetwork(
+            layer_sizes=[64, 32, 10],
+            config=neuromorphic_config,
             wavelength_config=wavelength_config,
-            thermal_config=thermal_config,
-            neuromorphic_config=neuromorphic_config
+            thermal_config=thermal_config
         )
         
         logger.info("✅ Neuromorphic learning: PASSED")
@@ -151,10 +152,12 @@ def test_multimodal_processing():
         multimodal_config = MultiModalConfig()
         
         # Create multi-modal network
+        architecture_config = {"layers": [64, 32, 10], "activation": "relu"}
         network = MultiModalQuantumOpticalNetwork(
+            architecture_config=architecture_config,
+            multimodal_config=multimodal_config,
             wavelength_config=wavelength_config,
-            thermal_config=thermal_config,
-            multimodal_config=multimodal_config
+            thermal_config=thermal_config
         )
         
         logger.info("✅ Multi-modal processing: PASSED")

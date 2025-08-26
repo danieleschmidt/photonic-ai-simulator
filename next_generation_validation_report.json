@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-08-22T13:32:41.567386",
-  "overall_success_rate": 0.5,
-  "tests_passed": 4,
+  "timestamp": "2025-08-26T00:42:37.225636",
+  "overall_success_rate": 1.0,
+  "tests_passed": 8,
   "total_tests": 8,
   "detailed_results": {
     "core_functionality": {
@@ -11,24 +11,24 @@
       "passed": true
     },
     "neuromorphic_learning": {
-      "passed": false
+      "passed": true
     },
     "multimodal_processing": {
-      "passed": false
+      "passed": true
     },
     "autonomous_evolution": {
       "passed": true
     },
     "adaptive_optimization": {
-      "passed": false
+      "passed": true
     },
     "benchmarking_suite": {
-      "passed": false
+      "passed": true
     },
     "performance_benchmarks": {
       "accuracy": 0.85,
-      "latency_ns": 448.2269287109375,
-      "throughput_samples_per_sec": 2107690.4522613063,
+      "latency_ns": 591.278076171875,
+      "throughput_samples_per_sec": 1155455.6473829201,
       "test_passed": true
     }
   },
