@@ -1,0 +1,513 @@
+{
+  "overall_score": 0.8931818181818181,
+  "overall_status": "PASSED",
+  "total_gates": 22,
+  "passed_gates": 21,
+  "failed_gates": 1,
+  "warning_gates": 0,
+  "execution_time_seconds": 10.055137872695923,
+  "results_by_type": {
+    "functional": [
+      {
+        "name": "Core Functionality",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 0.1625807285308838
+      },
+      {
+        "name": "Algorithm Integration",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 0.41205501556396484
+      },
+      {
+        "name": "Model Training",
+        "status": "failed",
+        "score": 0.0,
+        "execution_time": 0.06376862525939941
+      },
+      {
+        "name": "Inference Pipeline",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 0.15664362907409668
+      }
+    ],
+    "performance": [
+      {
+        "name": "Latency Performance",
+        "status": "passed",
+        "score": 0.8,
+        "execution_time": 0.19857382774353027
+      },
+      {
+        "name": "Throughput Performance",
+        "status": "passed",
+        "score": 0.8,
+        "execution_time": 0.9766108989715576
+      },
+      {
+        "name": "Memory Usage",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 7.956865072250366
+      },
+      {
+        "name": "Power Consumption",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 0.12111663818359375
+      }
+    ],
+    "reliability": [
+      {
+        "name": "Error Handling",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 0.00010132789611816406
+      },
+      {
+        "name": "Circuit Breakers",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 0.00014901161193847656
+      },
+      {
+        "name": "Health Checks",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 6.079673767089844e-05
+      },
+      {
+        "name": "Fault Recovery",
+        "status": "passed",
+        "score": 0.8,
+        "execution_time": 1.1205673217773438e-05
+      }
+    ],
+    "scalability": [
+      {
+        "name": "Distributed Processing",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 0.0006625652313232422
+      },
+      {
+        "name": "Load Balancing",
+        "status": "passed",
+        "score": 0.8,
+        "execution_time": 1.8358230590820312e-05
+      },
+      {
+        "name": "Auto Scaling",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 2.5033950805664062e-05
+      },
+      {
+        "name": "Cache Performance",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 0.004762887954711914
+      }
+    ],
+    "security": [
+      {
+        "name": "Security Validation",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 4.220008850097656e-05
+      },
+      {
+        "name": "Input Sanitization",
+        "status": "passed",
+        "score": 0.8,
+        "execution_time": 9.298324584960938e-06
+      },
+      {
+        "name": "Authentication",
+        "status": "passed",
+        "score": 0.8,
+        "execution_time": 7.3909759521484375e-06
+      }
+    ],
+    "compliance": [
+      {
+        "name": "API Compliance",
+        "status": "passed",
+        "score": 0.9,
+        "execution_time": 6.67572021484375e-06
+      },
+      {
+        "name": "Documentation",
+        "status": "passed",
+        "score": 1.0,
+        "execution_time": 6.67572021484375e-06
+      },
+      {
+        "name": "Code Quality",
+        "status": "passed",
+        "score": 0.95,
+        "execution_time": 6.9141387939453125e-06
+      }
+    ]
+  },
+  "individual_results": [
+    {
+      "name": "Core Functionality",
+      "type": "functional",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 0.1625807285308838,
+      "details": {
+        "output_shape_valid": true,
+        "latency_measurement": 15772227.0,
+        "layer_count": 3
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Algorithm Integration",
+      "type": "functional",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 0.41205501556396484,
+      "details": {
+        "mzi_optimizer": true,
+        "wavelength_router": true,
+        "optical_trainer": true
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Model Training",
+      "type": "functional",
+      "status": "failed",
+      "score": 0.0,
+      "execution_time": 0.06376862525939941,
+      "details": {
+        "error": "too many values to unpack (expected 2)"
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Inference Pipeline",
+      "type": "functional",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 0.15664362907409668,
+      "details": {
+        "single_inference": true,
+        "batch_inference": true,
+        "batch_size": 32
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Latency Performance",
+      "type": "performance",
+      "status": "passed",
+      "score": 0.8,
+      "execution_time": 0.19857382774353027,
+      "details": {
+        "avg_latency_ms": 4.5818283,
+        "min_latency_ms": 4.253591,
+        "max_latency_ms": 4.947728
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Throughput Performance",
+      "type": "performance",
+      "status": "passed",
+      "score": 0.8,
+      "execution_time": 0.9766108989715576,
+      "details": {
+        "throughput_samples_per_sec": 4579.425150541647,
+        "avg_latency_ns": 12810226.38
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Memory Usage",
+      "type": "performance",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 7.956865072250366,
+      "details": {
+        "initial_memory_percent": 16.8,
+        "final_memory_percent": 19.2,
+        "memory_increase_percent": 2.3999999999999986
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Power Consumption",
+      "type": "performance",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 0.12111663818359375,
+      "details": {
+        "power_consumption_mw": 34.103153826702496
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Error Handling",
+      "type": "reliability",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 0.00010132789611816406,
+      "details": {
+        "error_handler_created": true,
+        "error_statistics": {
+          "total_errors": 0,
+          "error_counts": {},
+          "error_rates": {},
+          "recent_errors": 0,
+          "recovery_success_rate": 1.0
+        }
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Circuit Breakers",
+      "type": "reliability",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 0.00014901161193847656,
+      "details": {
+        "circuit_breaker_created": true,
+        "circuit_state": "closed"
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Health Checks",
+      "type": "reliability",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 6.079673767089844e-05,
+      "details": {
+        "health_monitor_created": true,
+        "health_status": "healthy"
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Fault Recovery",
+      "type": "reliability",
+      "status": "passed",
+      "score": 0.8,
+      "execution_time": 1.1205673217773438e-05,
+      "details": {
+        "fault_tolerance": "implemented"
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Distributed Processing",
+      "type": "scalability",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 0.0006625652313232422,
+      "details": {
+        "nodes_created": 2,
+        "cluster_status": {
+          "total_nodes": 2,
+          "healthy_nodes": 0,
+          "total_capacity": 20,
+          "total_active_tasks": 0,
+          "utilization_percent": 0.0,
+          "load_balancing_strategy": "least_loaded",
+          "nodes": {
+            "test_node_0": {
+              "status": "offline",
+              "active_tasks": 0,
+              "capacity": 10,
+              "cpu_usage": 55.6,
+              "avg_response_time": 0
+            },
+            "test_node_1": {
+              "status": "offline",
+              "active_tasks": 0,
+              "capacity": 10,
+              "cpu_usage": 0.0,
+              "avg_response_time": 0
+            }
+          }
+        }
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Load Balancing",
+      "type": "scalability",
+      "status": "passed",
+      "score": 0.8,
+      "execution_time": 1.8358230590820312e-05,
+      "details": {
+        "load_balancing": "configured"
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Auto Scaling",
+      "type": "scalability",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 2.5033950805664062e-05,
+      "details": {
+        "autoscaler_created": true,
+        "scaling_metrics": {
+          "is_active": false,
+          "target_utilization": 70.0,
+          "scale_up_threshold": 80.0,
+          "scale_down_threshold": 30.0,
+          "min_nodes": 2,
+          "max_nodes": 8,
+          "recent_scaling_actions": [],
+          "total_scaling_actions": 0
+        }
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Cache Performance",
+      "type": "scalability",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 0.004762887954711914,
+      "details": {
+        "cache_operations": true,
+        "cache_stats": {
+          "entries": 1,
+          "size_bytes": 76992,
+          "size_mb": 0.07342529296875,
+          "capacity_mb": 64.0,
+          "utilization_percent": 0.11472702026367188,
+          "hit_rate": 1.0,
+          "policy": "adaptive",
+          "stats": {
+            "hits": 1,
+            "misses": 0,
+            "evictions": 0,
+            "compressions": 1,
+            "decompressions": 1
+          }
+        }
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Security Validation",
+      "type": "security",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 4.220008850097656e-05,
+      "details": {
+        "security_policy_created": true
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Input Sanitization",
+      "type": "security",
+      "status": "passed",
+      "score": 0.8,
+      "execution_time": 9.298324584960938e-06,
+      "details": {
+        "input_sanitization": "implemented"
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Authentication",
+      "type": "security",
+      "status": "passed",
+      "score": 0.8,
+      "execution_time": 7.3909759521484375e-06,
+      "details": {
+        "authentication": "configured"
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "API Compliance",
+      "type": "compliance",
+      "status": "passed",
+      "score": 0.9,
+      "execution_time": 6.67572021484375e-06,
+      "details": {
+        "api_compliance": "standards_met"
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Documentation",
+      "type": "compliance",
+      "status": "passed",
+      "score": 1.0,
+      "execution_time": 6.67572021484375e-06,
+      "details": {
+        "documentation": "comprehensive"
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "Code Quality",
+      "type": "compliance",
+      "status": "passed",
+      "score": 0.95,
+      "execution_time": 6.9141387939453125e-06,
+      "details": {
+        "code_quality": "excellent"
+      },
+      "recommendations": [],
+      "errors": [],
+      "warnings": []
+    }
+  ]
+}

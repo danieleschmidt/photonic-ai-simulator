@@ -836,3 +836,49 @@ def create_optimized_network(task: str = "mnist",
         layer_configs, wavelength_config, thermal_config, 
         fabrication_config, opt_config
     )
+
+
+def create_optimization_backend(backend_type: str = "auto", **kwargs) -> OptimizationBackend:
+    """
+    Create optimization backend for photonic neural network computation.
+    
+    Args:
+        backend_type: Backend type ("cpu", "gpu", "jax", "auto")
+        **kwargs: Backend-specific configuration parameters
+        
+    Returns:
+        Configured optimization backend
+    """
+    if backend_type == "auto":
+        # Auto-select best available backend
+        if JAX_AVAILABLE:
+            backend_type = "jax"
+        elif GPU_AVAILABLE:
+            backend_type = "gpu"
+        else:
+            backend_type = "cpu"
+    
+    if backend_type == "cpu":
+        backend = CPUOptimizationBackend()
+    elif backend_type == "gpu":
+        if not GPU_AVAILABLE:
+            logger.warning("GPU backend requested but not available, falling back to CPU")
+            backend = CPUOptimizationBackend()
+        else:
+            backend = GPUOptimizationBackend()
+    elif backend_type == "jax":
+        if not JAX_AVAILABLE:
+            logger.warning("JAX backend requested but not available, falling back to CPU")
+            backend = CPUOptimizationBackend()
+        else:
+            backend = JAXOptimizationBackend()
+    else:
+        raise ValueError(f"Unknown backend type: {backend_type}")
+    
+    # Initialize with default config or provided parameters
+    config = OptimizationConfig(**kwargs)
+    backend.initialize(config)
+    
+    logger.info(f"Created {backend_type} optimization backend")
+    
+    return backend

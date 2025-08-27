@@ -46,27 +46,37 @@ class PhotonicError(Exception):
 
 class QuantumError(PhotonicError):
     """Quantum enhancement specific errors."""
-    pass
+    def __init__(self, message: str, coherence_loss: float = 0.0):
+        super().__init__(message)
+        self.coherence_loss = coherence_loss
 
 
 class WavelengthError(PhotonicError):
     """Wavelength management specific errors."""
-    pass
+    def __init__(self, message: str, affected_channels: List[int] = None):
+        super().__init__(message)
+        self.affected_channels = affected_channels or []
 
 
 class FederatedError(PhotonicError):
     """Federated learning specific errors."""
-    pass
+    def __init__(self, message: str, node_id: Optional[str] = None):
+        super().__init__(message)
+        self.node_id = node_id
 
 
 class ValidationError(PhotonicError):
     """Input/output validation errors."""
-    pass
+    def __init__(self, message: str, invalid_fields: List[str] = None):
+        super().__init__(message)
+        self.invalid_fields = invalid_fields or []
 
 
 class SystemError(PhotonicError):
     """System-level errors."""
-    pass
+    def __init__(self, message: str, component: Optional[str] = None):
+        super().__init__(message)
+        self.component = component
 
 
 @dataclass
