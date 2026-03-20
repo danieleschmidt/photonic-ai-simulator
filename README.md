@@ -1,34 +1,25 @@
 # photonic-ai-simulator
 
-A Python simulation framework for photonic computing accelerators — exploring 100x ML acceleration via optical matrix multiplication.
+Simulation of photonic AI accelerator components: waveguides, Mach-Zehnder switches, and optical matrix multiply units.
 
-## Architecture
+## Components
 
-- **WaveguideSimulator** — propagation matrix method for optical waveguides
-- **MachZehnderSwitch** — 2×2 optical switch with phase-controlled splitting
-- **PhotonicAccelerator** — chains MZ switches to form an optical matrix-multiply unit
-- **AccelerationBenchmark** — compare photonic MAC ops/J vs electronic baseline
+- **WaveguideSimulator** — Transfer matrix propagation with loss and phase
+- **MachZehnderSwitch** — Electro-optic switch with bar/cross port outputs
+- **PhotonicAccelerator** — Optical matrix-vector multiply unit
+- **AccelerationBenchmark** — Throughput comparison vs electronic baseline, 64×64 demo
 
-## Requirements
+## Usage
 
-- Python 3.9+
-- numpy
-
-## Installation
-
-```bash
-pip install numpy
+```python
+from photonic_ai.accelerator import AccelerationBenchmark
+bench = AccelerationBenchmark(size=64)
+print(bench.demo_64x64())
 ```
 
-## Quick Demo
+## Install & Test
 
 ```bash
-python demo.py
-```
-
-## Testing
-
-```bash
-pip install pytest
+pip install -r requirements.txt
 pytest tests/ -v
 ```
